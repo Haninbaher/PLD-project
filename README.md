@@ -134,14 +134,6 @@ pygold script.pg
 
 PyGold is currently in development. Feedback and contributions are welcome!
 
-## License
-
-[Insert your preferred license here]
-
 ## Author
 
 Created by Hanin
-
-## Contributing
-
-Interested in contributing to PyGold? Check out our [contribution guidelines](CONTRIBUTING.md).
