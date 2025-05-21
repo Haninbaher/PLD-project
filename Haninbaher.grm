@@ -1,0 +1,183 @@
+"Name"    = 'PyGold'
+"Version" = '1.0'
+"Author"  = 'Hanin'
+"About"   = 'A Python-like language with distinct differences for Gold Parser'
+
+"Case Sensitive" = True
+"Start Symbol"   = <Program>
+
+! ==============================
+! Basic Symbols and Tokens
+! ==============================
+
+{ID Head}       = {Letter} + [_]
+{ID Tail}       = {Alphanumeric} + [_]
+{String Chars}  = {All Printable} - ["]
+{Hex Digit}     = {Digit} + [abcdef] + [ABCDEF]
+
+! ==============================
+! Text Tokens
+! ==============================
+
+Identifier = {ID Head}{ID Tail}*
+
+StringLiteral = '"'({String Chars} | '\"')*'"'
+IntegerLiteral = {Digit}+
+FloatLiteral = {Digit}+'.'{Digit}+
+
+! ==============================
+! Grammar Rules
+! ==============================
+
+<Program> ::= <StatementList>
+
+<StatementList> ::= <Statement> <StatementList>
+                 |  <Statement>
+
+<Statement> ::= <SimpleStatement>
+             |  <CompoundStatement>
+
+<SimpleStatement> ::= <Assignment>
+                   |  <Expression>
+                   |  <PrintStatement>
+                   |  <ReturnStatement>
+                   |  <ImportStatement>
+
+<CompoundStatement> ::= <IfStatement>
+                     |  <WhileStatement>
+                     |  <ForStatement>
+                     |  <UntilStatement>
+                     |  <FunctionDefinition>
+                     |  <ClassDefinition>
+                     |  <TryStatement>
+
+! ==============================
+! Assignment Expressions
+! ==============================
+
+<Assignment> ::= 'let' Identifier ':=' <Expression>
+              |  Identifier ':=' <Expression>
+
+<Expression> ::= <LogicalExpression>
+
+<LogicalExpression> ::= <ComparisonExpression>
+                     |  <LogicalExpression> 'and' <ComparisonExpression>
+                     |  <LogicalExpression> 'or' <ComparisonExpression>
+
+<ComparisonExpression> ::= <ArithmeticExpression>
+                        |  <ComparisonExpression> '==' <ArithmeticExpression>
+                        |  <ComparisonExpression> '!=' <ArithmeticExpression>
+                        |  <ComparisonExpression> '<' <ArithmeticExpression>
+                        |  <ComparisonExpression> '>' <ArithmeticExpression>
+                        |  <ComparisonExpression> '<=' <ArithmeticExpression>
+                        |  <ComparisonExpression> '>=' <ArithmeticExpression>
+
+<ArithmeticExpression> ::= <Term>
+                        |  <ArithmeticExpression> '+' <Term>
+                        |  <ArithmeticExpression> '-' <Term>
+
+<Term> ::= <Factor>
+        |  <Term> '*' <Factor>
+        |  <Term> '/' <Factor>
+        |  <Term> '%' <Factor>
+
+<Factor> ::= <Primary>
+          |  '+' <Factor>
+          |  '-' <Factor>
+          |  'not' <Factor>
+          |  <Factor> '++'
+          |  <Factor> '--'
+
+<Primary> ::= Identifier
+           |  IntegerLiteral
+           |  FloatLiteral
+           |  StringLiteral
+           |  'true'
+           |  'false'
+           |  'none'
+           |  '(' <Expression> ')'
+           |  <FunctionCall>
+           |  <ListLiteral>
+           |  <DictionaryLiteral>
+
+<FunctionCall> ::= Identifier '(' <ExpressionList> ')'
+                |  Identifier '(' ')'
+
+<ExpressionList> ::= <Expression>
+                  |  <Expression> ',' <ExpressionList>
+
+<ListLiteral> ::= '[' <ExpressionList> ']'
+               |  '[' ']'
+
+<DictionaryLiteral> ::= '{' <KeyValueList> '}'
+                     |  '{' '}'
+
+<KeyValueList> ::= <KeyValue>
+                |  <KeyValue> ',' <KeyValueList>
+
+<KeyValue> ::= <Expression> ':' <Expression>
+
+! ==============================
+! Control Statements
+! ==============================
+
+<IfStatement> ::= 'if' <Expression> 'begin' <StatementList> 'end'
+               |  'if' <Expression> 'begin' <StatementList> 'end' <ElseClause>
+
+<ElseClause> ::= 'else' 'begin' <StatementList> 'end'
+              |  'elif' <Expression> 'begin' <StatementList> 'end'
+              |  'elif' <Expression> 'begin' <StatementList> 'end' <ElseClause>
+
+<WhileStatement> ::= 'while' <Expression> 'begin' <StatementList> 'end'
+
+<UntilStatement> ::= 'until' <Expression> 'begin' <StatementList> 'end'
+
+<ForStatement> ::= 'for' Identifier 'in' <Expression> 'begin' <StatementList> 'end'
+
+! ==============================
+! Function and Class Definitions
+! ==============================
+
+<FunctionDefinition> ::= 'function' Identifier '(' <ParameterList> ')' '->' <ReturnType> 'begin' <StatementList> 'end'
+                      |  'function' Identifier '(' ')' '->' <ReturnType> 'begin' <StatementList> 'end'
+                      |  'function' Identifier '(' <ParameterList> ')' 'begin' <StatementList> 'end'
+                      |  'function' Identifier '(' ')' 'begin' <StatementList> 'end'
+
+<ParameterList> ::= Identifier
+                 |  Identifier ',' <ParameterList>
+
+<ReturnType> ::= Identifier
+
+<ClassDefinition> ::= 'class' Identifier 'begin' <ClassBody> 'end'
+
+<ClassBody> ::= <ClassMethod> <ClassBody>
+             |  <ClassMethod>
+             |  <ClassAttribute> <ClassBody>
+             |  <ClassAttribute>
+
+<ClassMethod> ::= <FunctionDefinition>
+
+<ClassAttribute> ::= 'let' Identifier ':=' <Expression>
+
+! ==============================
+! Miscellaneous Statements
+! ==============================
+
+<PrintStatement> ::= 'print' '(' <Expression> ')'
+                  |  'print' '(' ')'
+
+<ReturnStatement> ::= 'return' <Expression>
+                   |  'return'
+
+<ImportStatement> ::= 'import' Identifier
+                   |  'from' Identifier 'import' Identifier
+                   |  'from' Identifier 'import' '*'
+
+<TryStatement> ::= 'try' 'begin' <StatementList> 'end' <ExceptBlock>
+                |  'try' 'begin' <StatementList> 'end' <FinallyBlock>
+                |  'try' 'begin' <StatementList> 'end' <ExceptBlock> <FinallyBlock>
+
+<ExceptBlock> ::= 'except' 'begin' <StatementList> 'end'
+               |  'except' Identifier 'begin' <StatementList> 'end'
+
+<FinallyBlock> ::= 'finally' 'begin' <StatementList> 'end'

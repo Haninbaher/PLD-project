@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35931.197 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Goldparser2", "Goldparser2\Goldparser2.csproj", "{FF2D24BC-7CE4-4CFC-8249-B50D70D4FD15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF2D24BC-7CE4-4CFC-8249-B50D70D4FD15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2D24BC-7CE4-4CFC-8249-B50D70D4FD15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2D24BC-7CE4-4CFC-8249-B50D70D4FD15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2D24BC-7CE4-4CFC-8249-B50D70D4FD15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E012707-A53F-490A-8859-549865EC5642}
+	EndGlobalSection
+EndGlobal
